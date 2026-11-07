@@ -1,0 +1,462 @@
+
+/* GCP STUDIO — VISUAL EDITOR */
+
+.gcp-studio {
+  --studio-ink: #202420;
+  --studio-accent: #c9d8b8;
+  min-height: 100vh;
+}
+
+.gcp-studio-toolbar {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 50%;
+  width: min(95%, 1120px);
+  min-height: 70px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 12px;
+  background: rgba(25,29,25,.97);
+  color: white;
+  box-shadow: 0 16px 55px rgba(0,0,0,.22);
+  backdrop-filter: blur(25px);
+}
+
+.gcp-studio-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.gcp-studio-logo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: #dbe2d2;
+  color: #252b24;
+  font-family: "Manrope", sans-serif;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -.09em;
+}
+
+.gcp-studio-brand strong {
+  display: block;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.gcp-studio-brand small {
+  display: block;
+  margin-top: 5px;
+  color: #a0a99e;
+  white-space: nowrap;
+  font-size: 8px;
+  letter-spacing: .12em;
+}
+
+.gcp-studio-mode {
+  margin-left: 12px;
+  padding: 7px 10px;
+  border: 1px solid #465046;
+  border-radius: 4px;
+  color: #c4d5b8;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+
+.gcp-studio-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gcp-studio-actions button,
+.gcp-studio-utility button {
+  border: 0;
+  cursor: pointer;
+}
+
+.gcp-studio-actions > button {
+  min-height: 39px;
+  padding: 0 13px;
+  border-radius: 6px;
+  background: transparent;
+  color: #d5dbd3;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background .2s, color .2s;
+}
+
+.gcp-studio-actions > button:hover:not(:disabled) {
+  background: #353d35;
+}
+
+.gcp-studio-actions > button:disabled {
+  opacity: .3;
+  cursor: not-allowed;
+}
+
+.gcp-toolbar-divider {
+  width: 1px;
+  height: 24px;
+  margin: 0 7px;
+  background: #495049;
+}
+
+.gcp-studio-actions > .gcp-save-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: 5px;
+  padding: 0 18px;
+  background: #dce4d3;
+  color: #202820;
+}
+
+.gcp-studio-actions > .gcp-save-button:hover:not(:disabled) {
+  background: white;
+}
+
+.gcp-dirty-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #b26e3d;
+}
+
+.gcp-studio-utility {
+  position: fixed;
+  z-index: 999;
+  bottom: 22px;
+  left: 50%;
+  width: min(95%, 720px);
+  min-height: 49px;
+  padding: 10px 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255,255,255,.13);
+  border-radius: 9px;
+  background: rgba(29,33,29,.96);
+  color: #d4dad1;
+  box-shadow: 0 12px 40px rgba(0,0,0,.2);
+}
+
+.gcp-studio-instructions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+}
+
+.gcp-instruction-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #b5d2a5;
+}
+
+.gcp-studio-utility-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.gcp-studio-utility-actions button,
+.gcp-studio-utility-actions a {
+  padding: 0;
+  background: none;
+  color: #d4dad1;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.gcp-studio-utility-actions button:hover,
+.gcp-studio-utility-actions a:hover {
+  color: white;
+}
+
+.gcp-studio-notice {
+  position: fixed;
+  z-index: 1001;
+  top: 95px;
+  left: 50%;
+  max-width: calc(100% - 32px);
+  padding: 13px 18px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transform: translateX(-50%);
+  border: 1px solid #d5dfcb;
+  border-radius: 7px;
+  background: #f2f7ed;
+  color: #354e34;
+  box-shadow: 0 10px 35px rgba(0,0,0,.12);
+  font-size: 12px;
+}
+
+.gcp-studio-notice button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 19px;
+  cursor: pointer;
+}
+
+/* SHIFT WEBSITE NAV BELOW EDITOR TOOLBAR */
+
+.gcp-studio .site-header,
+.gcp-studio .site-header.scrolled {
+  top: 100px;
+}
+
+/* EDITABLE TEXT */
+
+.gcp-studio-editing .gcp-editable-text {
+  position: relative;
+  border-radius: 3px;
+  outline: 1px dashed transparent;
+  outline-offset: 5px;
+  cursor: text;
+  transition:
+    outline-color .2s,
+    background .2s;
+}
+
+.gcp-studio-editing .gcp-editable-text:hover {
+  outline-color: rgba(177,207,164,.85);
+  background: rgba(177,207,164,.09);
+}
+
+.gcp-studio-editing .gcp-editable-text:focus {
+  outline: 2px solid #b5d9a4;
+  outline-offset: 6px;
+  background: rgba(177,207,164,.12);
+  cursor: text;
+}
+
+.gcp-studio-editing .gcp-editable-text:empty::before {
+  content: "Click to add text";
+  color: #a1b39b;
+  font-size: .65em;
+  font-style: italic;
+  opacity: .75;
+}
+
+.gcp-studio-editing a:has(.gcp-editable-text) {
+  cursor: text;
+}
+
+/* EDITABLE IMAGE */
+
+.gcp-image-slot {
+  isolation: isolate;
+}
+
+.gcp-editable-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border: 2px solid transparent;
+  pointer-events: none;
+  transition: border-color .25s;
+}
+
+.gcp-editable-image:hover::after {
+  border-color: rgba(194,226,176,.9);
+}
+
+.gcp-image-edit-button {
+  position: absolute;
+  z-index: 20;
+  top: 50%;
+  left: 50%;
+  padding: 14px 19px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -45%);
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 7px;
+  background: rgba(27,33,27,.92);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: none;
+  transition:
+    opacity .25s,
+    transform .25s;
+}
+
+.gcp-image-edit-button span {
+  font-size: 19px;
+}
+
+.gcp-editable-image:hover .gcp-image-edit-button,
+.gcp-image-edit-button:focus-visible {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+
+.gcp-image-remove-button {
+  position: absolute;
+  z-index: 20;
+  top: 16px;
+  right: 16px;
+  padding: 9px 13px;
+  border: 0;
+  border-radius: 5px;
+  background: rgba(28,32,28,.9);
+  color: white;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.gcp-image-error {
+  position: absolute;
+  z-index: 30;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  padding: 12px;
+  border-radius: 5px;
+  background: #fff3ef;
+  color: #9d4636;
+  font-size: 12px;
+}
+
+/* EDITOR-SPECIFIC HERO TITLE */
+
+.gcp-hero-title {
+  margin: 0;
+  font-size: clamp(95px, 14vw, 230px);
+  font-weight: 600;
+  line-height: .87;
+  letter-spacing: -.105em;
+  overflow-wrap: anywhere;
+}
+
+/* MAKE IMAGE BUTTONS WORK OVER HERO OVERLAYS */
+
+.gcp-studio-editing .hero-shade,
+.gcp-studio-editing .statement-shade {
+  pointer-events: none;
+}
+
+.gcp-studio-editing .hero-background {
+  transform: none;
+}
+
+/* KEEP SCROLL ANIMATIONS VISIBLE WHILE EDITING */
+
+.gcp-studio-editing .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .gcp-studio-toolbar {
+    top: 8px;
+    width: calc(100% - 16px);
+    padding: 10px;
+  }
+
+  .gcp-studio-brand small,
+  .gcp-studio-mode {
+    display: none;
+  }
+
+  .gcp-studio-actions {
+    gap: 2px;
+  }
+
+  .gcp-studio-actions > button {
+    padding: 0 9px;
+  }
+
+  .gcp-studio-actions > .gcp-save-button {
+    padding: 0 12px;
+  }
+
+  .gcp-studio .site-header,
+  .gcp-studio .site-header.scrolled {
+    top: 93px;
+  }
+
+  .gcp-hero-title {
+    font-size: clamp(78px, 17vw, 145px);
+  }
+
+  .gcp-image-edit-button {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 540px) {
+  .gcp-studio-logo {
+    width: 34px;
+    height: 34px;
+    font-size: 20px;
+  }
+
+  .gcp-studio-brand {
+    gap: 7px;
+  }
+
+  .gcp-studio-brand strong {
+    font-size: 10px;
+  }
+
+  .gcp-toolbar-divider {
+    margin: 0 2px;
+  }
+
+  .gcp-studio-actions > .gcp-save-button {
+    font-size: 10px;
+  }
+
+  .gcp-studio-utility {
+    bottom: 12px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 13px;
+  }
+
+  .gcp-hero-title {
+    font-size: clamp(75px, 18vw, 115px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gcp-editable-text,
+  .gcp-image-edit-button {
+    transition: none;
+  }
+}
