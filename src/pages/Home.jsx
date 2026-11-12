@@ -1,380 +1,458 @@
 
-import { useEffect } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import {
-  EditableText as Text,
-  EditableImage as Photo,
-  useSiteContent,
-  useEditor,
-} from "../components/Editable";
+  ArrowDown,
+  ArrowUpRight,
+  ArrowRight,
+} from "lucide-react";
 
-function Marker({ children }) {
-  return (
-    <div className="section-marker">
-      <span className="marker-dot" />
-      <span>{children}</span>
-    </div>
-  );
-}
+import Reveal from "../components/Reveal";
+import EditableText from "../components/EditableText";
+import EditableImage from "../components/EditableImage";
+import heroImage from "../assets/hero.png";
 
-function ArrowLink({ href, children, light = false }) {
-  const editor = useEditor();
-
-  return (
-    <a
-      href={href}
-      className={`arrow-link ${light ? "arrow-link-light" : ""}`}
-      onClick={(event) => {
-        if (editor.editing) event.preventDefault();
-      }}
-    >
-      <span>{children}</span>
-      <span className="arrow-link-icon">↗</span>
-    </a>
-  );
-}
-
-function Hero() {
-  const { hero } = useSiteContent();
-  const editor = useEditor();
-
-  return (
-    <section className="hero-section" id="home">
-      <Photo
-        path={["hero", "image"]}
-        alt={hero.imageAlt}
-        label="HERO PHOTOGRAPHY"
-        className="hero-background"
-        priority
-      />
-
-      <div className="hero-shade" />
-
-      <div className="hero-editorial">
-        <div className="hero-eyebrow">
-          <span className="hero-small-line" />
-          <Text path={["hero", "eyebrow"]} />
-        </div>
-
-        <div className="hero-title-wrap">
-          <Text
-            path={["hero", "title"]}
-            as="h1"
-            className="gcp-hero-title"
-          />
-
-          <div className="hero-title-side">
-            <span className="hero-side-line" />
-            <Text path={["hero", "subtitle"]} as="p" />
-          </div>
-        </div>
-
-        <div className="hero-lower-content">
-          <Text path={["hero", "description"]} as="p" />
-
-          <ArrowLink href={hero.primaryHref} light>
-            {editor.editing ? (
-              <Text path={["hero", "primaryButton"]} />
-            ) : (
-              hero.primaryButton
-            )}
-          </ArrowLink>
-        </div>
-      </div>
-
-      <div className="hero-bottom-bar">
-        <Text path={["hero", "location"]} />
-        <a href="#discover" className="hero-scroll">
-          SCROLL TO EXPLORE <span>↓</span>
-        </a>
-        <Text path={["hero", "index"]} />
-      </div>
-    </section>
-  );
-}
-
-function Intro() {
-  const { intro } = useSiteContent();
-
-  return (
-    <section className="intro-section" id="discover">
-      <div className="intro-top reveal">
-        <Marker>
-          <Text path={["intro", "eyebrow"]} />
-        </Marker>
-        <span className="intro-coordinate">GCP / 001</span>
-      </div>
-
-      <div className="intro-main reveal">
-        <h2>
-          <Text path={["intro", "lineOne"]} />
-          <Text path={["intro", "lineTwo"]} />
-          <Text
-            path={["intro", "lineThree"]}
-            className="intro-italic"
-          />
-        </h2>
-      </div>
-
-      <div className="intro-bottom reveal">
-        <span className="intro-asterisk">✳</span>
-        <Text path={["intro", "description"]} as="p" />
-      </div>
-    </section>
-  );
-}
-
-function Story() {
-  const { story } = useSiteContent();
-
-  return (
-    <section className="story-section" id="story">
-      <div className="story-image-column reveal">
-        <Photo
-          path={["story", "image"]}
-          alt={story.imageAlt}
-          label="STORY PHOTOGRAPHY"
-          className="story-image"
-        />
-
-        <div className="story-image-caption">
-          <span>FIG. 01</span>
-          <Text path={["story", "imageCaption"]} />
-        </div>
-      </div>
-
-      <div className="story-content-column reveal">
-        <Marker>
-          <Text path={["story", "eyebrow"]} />
-        </Marker>
-
-        <Text path={["story", "title"]} as="h2" />
-
-        <div className="story-copy">
-          <Text path={["story", "description"]} as="p" />
-          <Text path={["story", "secondaryText"]} as="p" />
-        </div>
-
-        <div className="story-bottom-mark">
-          <span>GCP</span>
-          <span>EST. —</span>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Experiences() {
-  const { experiences } = useSiteContent();
-
-  return (
-    <section className="experiences-section" id="experiences">
-      <div className="experiences-heading reveal">
-        <div className="experiences-heading-top">
-          <Marker>
-            <Text path={["experiences", "eyebrow"]} />
-          </Marker>
-          <span>CURATED FOR THE CURIOUS</span>
-        </div>
-
-        <Text path={["experiences", "title"]} as="h2" />
-
-        <div className="experiences-heading-bottom">
-          <Text
-            path={["experiences", "description"]}
-            as="p"
-          />
-          <span>SCROLL TO DISCOVER ↓</span>
-        </div>
-      </div>
-
-      <div className="experience-list">
-        {experiences.items.map((item, index) => (
-          <article
-            className={`experience-item experience-item-${index + 1} reveal`}
-            key={item.id}
-          >
-            <div className="experience-photo-wrap">
-              <Photo
-                path={["experiences", "items", index, "image"]}
-                alt={item.imageAlt}
-                label={`EXPERIENCE ${item.number}`}
-                className="experience-photo"
-              />
-
-              <span className="experience-image-index">
-                {item.number} / 0{experiences.items.length}
-              </span>
-            </div>
-
-            <div className="experience-meta">
-              <Text
-                path={["experiences", "items", index, "category"]}
-              />
-              <span>{item.number}</span>
-            </div>
-
-            <Text
-              path={["experiences", "items", index, "title"]}
-              as="h3"
-            />
-
-            <Text
-              path={["experiences", "items", index, "description"]}
-              as="p"
-            />
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Statement() {
-  const { statement } = useSiteContent();
-
-  return (
-    <section className="statement-section">
-      <Photo
-        path={["statement", "image"]}
-        alt={statement.imageAlt}
-        label="CINEMATIC PHOTOGRAPHY"
-        className="statement-image"
-      />
-
-      <div className="statement-shade" />
-
-      <div className="statement-content reveal">
-        <Marker>
-          <Text path={["statement", "eyebrow"]} />
-        </Marker>
-
-        <Text path={["statement", "title"]} as="h2" />
-
-        <span className="statement-symbol">✳</span>
-      </div>
-    </section>
-  );
-}
-
-function Journey() {
-  const { journey } = useSiteContent();
-
-  return (
-    <section className="journey-section" id="journey">
-      <div className="journey-heading reveal">
-        <Marker>
-          <Text path={["journey", "eyebrow"]} />
-        </Marker>
-
-        <div className="journey-heading-grid">
-          <Text path={["journey", "title"]} as="h2" />
-          <Text path={["journey", "description"]} as="p" />
-        </div>
-      </div>
-
-      <div className="journey-steps">
-        {journey.steps.map((step, index) => (
-          <div className="journey-step reveal" key={step.number}>
-            <span className="journey-number">
-              {step.number}
-            </span>
-
-            <Text
-              path={["journey", "steps", index, "title"]}
-              as="h3"
-            />
-
-            <Text
-              path={["journey", "steps", index, "description"]}
-              as="p"
-            />
-
-            <span className="journey-step-icon">↗</span>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function Closing() {
-  const { closing } = useSiteContent();
-  const editor = useEditor();
-
-  return (
-    <section className="closing-section">
-      <div className="closing-orbit orbit-one" />
-      <div className="closing-orbit orbit-two" />
-
-      <div className="closing-content reveal">
-        <Marker>
-          <Text path={["closing", "eyebrow"]} />
-        </Marker>
-
-        <Text path={["closing", "title"]} as="h2" />
-
-        <Text path={["closing", "description"]} as="p" />
-
-        <ArrowLink href={closing.buttonHref} light>
-          {editor.editing ? (
-            <Text path={["closing", "buttonText"]} />
-          ) : (
-            closing.buttonText
-          )}
-        </ArrowLink>
-      </div>
-
-      <span className="closing-corner-mark">GCP / END</span>
-    </section>
-  );
-}
+const defaultPhoto = (alt) => [
+  {
+    url: heroImage,
+    alt,
+  },
+];
 
 export default function Home() {
-  useEffect(() => {
-    const elements = document.querySelectorAll(".reveal");
-
-    if (
-      !("IntersectionObserver" in window) ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      elements.forEach((el) => el.classList.add("revealed"));
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("revealed");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <>
-      <Navbar />
+    <div className="premium-home">
+      {/* OPENING */}
+      <section className="premium-opening">
+        <div className="opening-content">
+          <Reveal>
+            <div className="opening-eyebrow">
+              <EditableText
+                id="home_eyebrow"
+                label="Opening eyebrow"
+                fallback="GUATEMALA CHILDREN'S PROJECT"
+              />
+            </div>
+          </Reveal>
 
-      <main>
-        <Hero />
-        <Intro />
-        <Story />
-        <Experiences />
-        <Statement />
-        <Journey />
-        <Closing />
-      </main>
+          <Reveal delay={100}>
+            <h1 className="opening-title">
+              <EditableText
+                id="home_title_first"
+                label="Opening headline - first line"
+                fallback="A little help."
+              />
+              <br />
+              <span>
+                <EditableText
+                  id="home_title_second"
+                  label="Opening headline - second line"
+                  fallback="A world of difference."
+                />
+              </span>
+            </h1>
+          </Reveal>
 
-      <Footer />
-    </>
+          <Reveal delay={200}>
+            <p className="opening-description">
+              <EditableText
+                id="home_description"
+                label="Opening description"
+                fallback="Because every child deserves a future worth dreaming about."
+              />
+            </p>
+          </Reveal>
+
+          <Reveal delay={300}>
+            <div className="opening-actions">
+              <a
+                className="premium-button"
+                href="/contact"
+              >
+                <EditableText
+                  id="home_primary_button"
+                  label="Primary button text"
+                  fallback="Make a difference"
+                />
+                <ArrowUpRight size={17} />
+              </a>
+
+              <a
+                className="premium-text-link"
+                href="/about"
+              >
+                <EditableText
+                  id="home_secondary_button"
+                  label="Secondary button text"
+                  fallback="Discover our story"
+                />
+                <ArrowRight size={17} />
+              </a>
+            </div>
+          </Reveal>
+        </div>
+
+        <div className="opening-scroll-indicator">
+          <EditableText
+            id="home_scroll_label"
+            label="Scroll indicator text"
+            fallback="DISCOVER WHAT'S POSSIBLE"
+          />
+          <ArrowDown size={15} />
+        </div>
+      </section>
+
+      {/* CINEMATIC IMAGE */}
+      <section className="cinematic-section">
+        <div className="cinematic-image-container">
+          <EditableImage
+            id="home_cinematic_photo"
+            label="Cinematic homepage photograph"
+            fallback={defaultPhoto(
+              "Guatemala Children's Project"
+            )}
+            className="cinematic-image"
+            imageClassName="cinematic-image"
+          />
+
+          <div className="cinematic-caption">
+            <span>
+              <EditableText
+                id="home_cinematic_caption_left"
+                label="Photo caption - left"
+                fallback="GUATEMALA"
+              />
+            </span>
+
+            <span>
+              <EditableText
+                id="home_cinematic_caption_right"
+                label="Photo caption - right"
+                fallback="WHERE OUR STORY CONTINUES"
+              />
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* MISSION */}
+      <section className="premium-mission">
+        <div className="premium-container">
+          <Reveal>
+            <span className="premium-label">
+              <EditableText
+                id="home_mission_label"
+                label="Mission section label"
+                fallback="OUR PURPOSE"
+              />
+            </span>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <h2 className="mission-headline">
+              <EditableText
+                id="home_mission_title_1"
+                label="Mission headline - first line"
+                fallback="The greatest impact"
+              />
+              <br />
+              <EditableText
+                id="home_mission_title_2"
+                label="Mission headline - second line"
+                fallback="begins with"
+              />
+              <br />
+              <span>
+                <EditableText
+                  id="home_mission_title_3"
+                  label="Mission headline - third line"
+                  fallback="human connection."
+                />
+              </span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <p className="mission-description">
+              <EditableText
+                id="home_mission_description"
+                label="Mission description"
+                fallback="We believe meaningful change starts when people come together. Through compassion, service, and genuine connection, we're working toward brighter futures for children and communities in Guatemala."
+              />
+            </p>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <a
+              className="premium-text-link"
+              href="/about"
+            >
+              <EditableText
+                id="home_mission_link"
+                label="Mission link text"
+                fallback="More about our mission"
+              />
+              <ArrowRight size={18} />
+            </a>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* DARK CINEMATIC CHAPTER */}
+      <section className="premium-chapter">
+        <div className="premium-container">
+          <Reveal>
+            <span className="premium-label label-light">
+              <EditableText
+                id="home_chapter_label"
+                label="Dark section label"
+                fallback="MORE THAN A MISSION"
+              />
+            </span>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <h2>
+              <EditableText
+                id="home_chapter_title_1"
+                label="Dark section headline - first line"
+                fallback="Real people."
+              />
+              <br />
+              <EditableText
+                id="home_chapter_title_2"
+                label="Dark section headline - second line"
+                fallback="Real moments."
+              />
+              <br />
+              <span>
+                <EditableText
+                  id="home_chapter_title_3"
+                  label="Dark section headline - third line"
+                  fallback="Real impact."
+                />
+              </span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <p>
+              <EditableText
+                id="home_chapter_description"
+                label="Dark section description"
+                fallback="The moments that matter most aren't always the biggest. Sometimes, they're the simplest."
+              />
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* STORY */}
+      <section className="premium-story">
+        <div className="premium-container">
+          <Reveal>
+            <div className="story-heading">
+              <span className="premium-label">
+                <EditableText
+                  id="home_story_label"
+                  label="Story section label"
+                  fallback="THE EXPERIENCE"
+                />
+              </span>
+
+              <h2>
+                <EditableText
+                  id="home_story_title_1"
+                  label="Story headline - first line"
+                  fallback="You don't just"
+                />
+                <br />
+                <EditableText
+                  id="home_story_title_2"
+                  label="Story headline - second line"
+                  fallback="visit a place."
+                />
+                <br />
+                <span>
+                  <EditableText
+                    id="home_story_title_3"
+                    label="Story headline - third line"
+                    fallback="It changes you."
+                  />
+                </span>
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="story-grid">
+            <Reveal className="story-visual">
+              <EditableImage
+                id="home_story_photo"
+                label="Story section photograph"
+                fallback={defaultPhoto(
+                  "Community and service in Guatemala"
+                )}
+              />
+            </Reveal>
+
+            <div className="story-copy">
+              <Reveal>
+                <span className="story-index">
+                  <EditableText
+                    id="home_story_index"
+                    label="Story index"
+                    fallback="01 / SERVICE"
+                  />
+                </span>
+
+                <h3>
+                  <EditableText
+                    id="home_story_subheading"
+                    label="Story subheading"
+                    fallback="An experience that stays with you."
+                  />
+                </h3>
+
+                <p>
+                  <EditableText
+                    id="home_story_description"
+                    label="Story description"
+                    fallback="Step outside the everyday. Connect with communities, build relationships, and experience what it means to serve with purpose."
+                  />
+                </p>
+
+                <a
+                  className="premium-text-link"
+                  href="/trips"
+                >
+                  <EditableText
+                    id="home_story_link"
+                    label="Service trips link"
+                    fallback="Explore service trips"
+                  />
+                  <ArrowRight size={18} />
+                </a>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PHOTO SHOWCASE */}
+      <section className="premium-gallery-preview">
+        <Reveal>
+          <span className="premium-label">
+            <EditableText
+              id="home_gallery_label"
+              label="Gallery section label"
+              fallback="THE MOMENTS"
+            />
+          </span>
+
+          <h2>
+            <EditableText
+              id="home_gallery_title_1"
+              label="Gallery headline - first line"
+              fallback="Some stories"
+            />
+            <br />
+            <EditableText
+              id="home_gallery_title_2"
+              label="Gallery headline - second line"
+              fallback="don't need words."
+            />
+          </h2>
+
+          <p>
+            <EditableText
+              id="home_gallery_description"
+              label="Gallery description"
+              fallback="A glimpse into the people and places that make this mission meaningful."
+            />
+          </p>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <div className="gallery-preview-image">
+            <EditableImage
+              id="home_gallery_photo"
+              label="Gallery preview photograph"
+              fallback={defaultPhoto(
+                "Guatemala Children's Project photo gallery"
+              )}
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={150}>
+          <a
+            className="premium-text-link"
+            href="/gallery"
+          >
+            <EditableText
+              id="home_gallery_link"
+              label="Gallery link text"
+              fallback="Explore the gallery"
+            />
+            <ArrowRight size={18} />
+          </a>
+        </Reveal>
+      </section>
+
+      {/* FINAL CTA */}
+      <section className="premium-final">
+        <div className="premium-container">
+          <Reveal>
+            <span className="premium-label">
+              <EditableText
+                id="home_final_label"
+                label="Final section label"
+                fallback="THE NEXT CHAPTER STARTS WITH YOU"
+              />
+            </span>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <h2>
+              <EditableText
+                id="home_final_title_1"
+                label="Final headline - first line"
+                fallback="Be the reason"
+              />
+              <br />
+              <span>
+                <EditableText
+                  id="home_final_title_2"
+                  label="Final headline - second line"
+                  fallback="something changes."
+                />
+              </span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={200}>
+            <p>
+              <EditableText
+                id="home_final_description"
+                label="Final section description"
+                fallback="Every meaningful difference begins with someone willing to make one."
+              />
+            </p>
+          </Reveal>
+
+          <Reveal delay={250}>
+            <a
+              className="premium-button"
+              href="/contact"
+            >
+              <EditableText
+                id="home_final_button"
+                label="Final button text"
+                fallback="Get involved"
+              />
+              <ArrowUpRight size={18} />
+            </a>
+          </Reveal>
+        </div>
+      </section>
+    </div>
   );
 }

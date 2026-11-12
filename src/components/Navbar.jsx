@@ -1,128 +1,56 @@
 
-import { useEffect, useState } from "react";
-import {
-  EditableText as Text,
-  useEditor,
-  useSiteContent,
-} from "./Editable";
+import { useState } from "react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+
+const links = [
+  { label: "Home", href: "/" },
+  { label: "Our Story", href: "/about" },
+  { label: "Trips", href: "/trips" },
+  { label: "News", href: "/news" },
+  { label: "Contact", href: "/contact" },
+];
 
 export default function Navbar() {
-  const content = useSiteContent();
-  const editor = useEditor();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-    };
-
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
-
-  function handleNavigation(event) {
-    if (editor.editing) {
-      event.preventDefault();
-      return;
-    }
-
-    setMenuOpen(false);
-  }
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <>
-      <header
-        className={`site-header ${scrolled ? "scrolled" : ""} ${
-          menuOpen ? "menu-active" : ""
-        }`}
-      >
+    <header className="site-header">
+      <nav className="navbar container" aria-label="Main navigation">
         <a
-          href="#home"
-          className="site-logo"
-          onClick={handleNavigation}
+          href="/"
+          className="nav-logo"
+          onClick={() => setMobileOpen(false)}
         >
-          <Text path={["brand", "name"]} />
-          <span className="logo-period">.</span>
+          GCP<span>.</span>
         </a>
 
-        <nav
-          className="desktop-navigation"
-          aria-label="Main navigation"
+        <div className={`nav-links ${mobileOpen ? "open" : ""}`}>
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <a href="/contact" className="nav-cta">
+          Get involved
+          <ArrowUpRight size={16} />
+        </a>
+
+        <button
+          type="button"
+          className="nav-mobile-toggle"
+          onClick={() => setMobileOpen((previous) => !previous)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
-          {content.navigation.map((item, index) => (
-            <a
-              href={item.href}
-              key={item.href}
-              onClick={handleNavigation}
-            >
-              <Text path={["navigation", index, "label"]} />
-            </a>
-          ))}
-        </nav>
-
-        <div className="header-actions">
-          <a
-            href="#experiences"
-            className="header-cta"
-            onClick={handleNavigation}
-          >
-            Explore <span>↗</span>
-          </a>
-
-          <button
-            type="button"
-            className={`menu-button ${menuOpen ? "is-open" : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-navigation"
-          >
-            <span />
-            <span />
-          </button>
-        </div>
-      </header>
-
-      <div
-        id="mobile-navigation"
-        className={`mobile-navigation ${menuOpen ? "visible" : ""}`}
-        aria-hidden={!menuOpen}
-        inert={!menuOpen}
-      >
-        <div className="mobile-navigation-inner">
-          <span className="mobile-menu-label">NAVIGATION</span>
-
-          {content.navigation.map((item, index) => (
-            <a
-              href={item.href}
-              key={item.href}
-              onClick={handleNavigation}
-            >
-              <span className="mobile-link-index">
-                0{index + 1}
-              </span>
-              <Text path={["navigation", index, "label"]} />
-              <span className="mobile-link-arrow">↗</span>
-            </a>
-          ))}
-
-          <div className="mobile-menu-footer">
-            <span>GCP — BEYOND THE ORDINARY</span>
-          </div>
-        </div>
-      </div>
-    </>
+          {mobileOpen ? <X size={23} /> : <Menu size={23} />}
+        </button>
+      </nav>
+    </header>
   );
 }
