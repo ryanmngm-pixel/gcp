@@ -21,6 +21,7 @@ import {
 
 import { supabase } from "../supabase";
 import { checkEditorAccess } from "../dev/contentApi";
+import { StudioAccess, StudioPassword } from "../dev/StudioAccess";
 import InquiryInbox from "../dev/InquiryInbox";
 import MediaWorkspace from "../dev/MediaWorkspace";
 import VisualEditor from "../dev/VisualEditor";
@@ -191,6 +192,8 @@ function LoginScreen({ onLogin, loading, error }) {
               )}
             </button>
           </form>
+
+          <StudioAccess emailLink busy={loading} />
 
           <div className="studio-auth-secure">
             <ShieldCheck size={15} />
@@ -497,6 +500,10 @@ function AccountPage({
 
 export default function Dev() {
   const [user, setUser] = useState(null);
+  const [managesAccess, setManagesAccess] = useState(false);
+  const [settingPassword, setSettingPassword] = useState(
+    () => new URLSearchParams(window.location.search).get("setup") === "1"
+  );
   const [authorized, setAuthorized] = useState(false);
   const [initializing, setInitializing] = useState(true);
   const [authBusy, setAuthBusy] = useState(false);
@@ -519,6 +526,8 @@ export default function Dev() {
 
       setUser(data.user);
 
+      const { data: canManage } = await supabase.rpc("gcp_claim_studio_access");
+      setManagesAccess(canManage === true);
       const allowed = await checkEditorAccess();
 
       setAuthorized(Boolean(allowed));
@@ -541,7 +550,7 @@ export default function Dev() {
     let active = true;
     let timeoutId;
 
-    refreshAccess();
+    const initialRefresh = window.setTimeout(refreshAccess, 0);
 
     const {
       data: { subscription },
@@ -553,6 +562,7 @@ export default function Dev() {
 
     return () => {
       active = false;
+      window.clearTimeout(initialRefresh);
 
       if (timeoutId) {
         window.clearTimeout(timeoutId);
@@ -619,6 +629,13 @@ export default function Dev() {
     }
   }
 
+  function finishPasswordSetup() {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("setup");
+    window.history.replaceState(window.history.state, "", url);
+    setSettingPassword(false);
+  }
+
   function navigate(id) {
     setPage(id);
     setMobileOpen(false);
@@ -652,6 +669,8 @@ export default function Dev() {
       />
     );
   }
+
+  if (settingPassword) return <StudioPassword onComplete={finishPasswordSetup} />;
 
   if (page === "visual") {
     return (
@@ -871,6 +890,8 @@ export default function Dev() {
           )}
 
           {page === "inquiries" && <InquiryInbox />}
+
+          {page === "account" && managesAccess && <StudioAccess />}
 
           {page === "account" && (
             <AccountPage
