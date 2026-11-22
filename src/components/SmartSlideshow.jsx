@@ -6,6 +6,7 @@ import "./SmartSlideshow.css";
 export default function SmartSlideshow({
   images = [],
   interval = 6000,
+  controls = true,
   className = "",
   alt = "Guatemala Children's Project",
 }) {
@@ -120,7 +121,7 @@ export default function SmartSlideshow({
         />
       ))}
 
-      {count > 1 && (
+      {controls && count > 1 && (
         <>
           <button
             type="button"

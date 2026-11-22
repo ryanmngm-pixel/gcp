@@ -10,17 +10,29 @@ import About from "./pages/About";
 import News from "./pages/News";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
+import Volunteer from "./pages/Volunteer";
+import Donate from "./pages/Donate";
+import { publicPages } from "./publicPages";
 import Dev from "./pages/Dev";
 
 import "./index.css";
 import "./App.css";
+import "./GcpEditorial.css";
 
 const routes = {
   "/": () => <PublishedHome />,
   "/about": () => (
     <PublishedPage pageId="about" component={About} />
   ),
-  "/trips": Gallery,
+  "/galleries": () => (
+    <PublishedPage pageId="trips" contentKey="gallery_visual" component={Gallery} />
+  ),
+  "/volunteer": () => (
+    <PublishedPage pageId="volunteer" component={Volunteer} />
+  ),
+  "/donate": () => (
+    <PublishedPage pageId="donate" component={Donate} />
+  ),
   "/news": () => (
     <PublishedPage pageId="news" component={News} />
   ),
@@ -35,7 +47,7 @@ function normalizePath(path) {
 
 function resolvePath(path) {
   const normalized = normalizePath(path);
-  return normalized === "/gallery" ? "/trips" : normalized;
+  return ["/gallery", "/trips"].includes(normalized) ? "/galleries" : normalized;
 }
 
 export default function App() {
@@ -56,7 +68,7 @@ export default function App() {
       }
 
       setPath(nextPath);
-      window.scrollTo(0, 0);
+      if (!window.location.hash) window.scrollTo(0, 0);
     }
 
     function handleLinkClick(event) {
@@ -83,7 +95,8 @@ export default function App() {
 
       const url = new URL(anchor.href);
 
-      if (url.origin !== window.location.origin) return;
+      if (url.origin !== window.location.origin || (!Object.hasOwn(routes, resolvePath(url.pathname)) && url.pathname !== "/dev")) return;
+      if (url.pathname === window.location.pathname && url.hash) return;
 
       event.preventDefault();
 
@@ -113,15 +126,28 @@ export default function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const page = publicPages.find(({ href }) => href === path);
+    const title = page?.label ?? (path === "/dev" ? "Studio" : "Page not found");
+    if (window.location.hash) {
+      let section = window.location.hash.slice(1);
+      try { section = decodeURIComponent(section); } catch { /* keep the original fragment */ }
+      document.getElementById(section)?.scrollIntoView();
+    }
+    document.title = path === "/"
+      ? "Guatemala Children's Project"
+      : `${title} | Guatemala Children's Project`;
+  }, [path]);
+
   if (path === "/dev") {
     return <Dev />;
   }
 
-  const Page = routes[path];
+  const Page = Object.hasOwn(routes, path) ? routes[path] : null;
 
   return (
     <div className="site-shell">
-      <Navbar />
+      <Navbar path={path} />
 
       <main id="main-content">
         {Page ? (

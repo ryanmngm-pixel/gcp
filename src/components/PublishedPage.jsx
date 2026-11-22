@@ -6,6 +6,7 @@ import PageTextLayer from "./PageTextLayer";
 
 export default function PublishedPage({
   pageId,
+  contentKey = `${pageId}_visual`,
   component: Page,
 }) {
   const [content, setContent] = useState({});
@@ -15,7 +16,7 @@ export default function PublishedPage({
 
     async function load() {
       try {
-        const records = await getPublished(`${pageId}_visual`);
+        const records = await getPublished(contentKey);
 
         if (!mounted) return;
 
@@ -50,7 +51,7 @@ export default function PublishedPage({
     return () => {
       mounted = false;
     };
-  }, [pageId]);
+  }, [contentKey, pageId]);
 
   return (
     <PublishedContentProvider content={content}>

@@ -6,15 +6,9 @@ import {
   X,
 } from "lucide-react";
 
-const links = [
-  { label: "Home", href: "/" },
-  { label: "Our Story", href: "/about" },
-  { label: "Trips", href: "/trips" },
-  { label: "News", href: "/news" },
-  { label: "Contact", href: "/contact" },
-];
+import { publicPages } from "../publicPages";
 
-export default function Navbar() {
+export default function Navbar({ path }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -59,10 +53,11 @@ export default function Navbar() {
             className="apple-nav-links"
             aria-label="Main navigation"
           >
-            {links.map((link) => (
+            {publicPages.filter(({ href }) => href !== "/donate").map((link) => (
               <a
                 key={link.href}
                 href={link.href}
+                aria-current={path === link.href ? "page" : undefined}
               >
                 {link.label}
               </a>
@@ -70,10 +65,11 @@ export default function Navbar() {
           </nav>
 
           <a
-            href="/contact"
+            href="/donate"
+            aria-current={path === "/donate" ? "page" : undefined}
             className="apple-nav-action"
           >
-            Get involved
+            Donate
             <ArrowUpRight size={15} />
           </a>
 
@@ -106,10 +102,11 @@ export default function Navbar() {
         aria-hidden={!mobileOpen}
       >
         <nav aria-label="Mobile navigation">
-          {links.map((link) => (
+          {publicPages.map((link) => (
             <a
               key={link.href}
               href={link.href}
+                aria-current={path === link.href ? "page" : undefined}
               onClick={closeMenu}
               tabIndex={mobileOpen ? 0 : -1}
             >

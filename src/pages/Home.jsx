@@ -8,11 +8,10 @@ import {
 import Reveal from "../components/Reveal";
 import EditableText from "../components/EditableText";
 import EditableImage from "../components/EditableImage";
-import heroImage from "../assets/hero.png";
 
-const defaultPhoto = (alt) => [
+const defaultPhoto = (file, alt) => [
   {
-    url: heroImage,
+    url: "/gcp/" + file + ".jpg",
     alt,
   },
 ];
@@ -56,7 +55,7 @@ export default function Home() {
               <EditableText
                 id="home_description"
                 label="Opening description"
-                fallback="Because every child deserves a future worth dreaming about."
+                fallback="Building a future one child at a time through service in rural Guatemala."
               />
             </p>
           </Reveal>
@@ -65,7 +64,7 @@ export default function Home() {
             <div className="opening-actions">
               <a
                 className="premium-button"
-                href="/contact"
+                href="/volunteer"
               >
                 <EditableText
                   id="home_primary_button"
@@ -90,6 +89,14 @@ export default function Home() {
           </Reveal>
         </div>
 
+        <EditableImage
+          id="home_opening_photo"
+          label="Opening photograph"
+          fallback={defaultPhoto("volunteer", "Guatemala Children’s Project service trip")}
+          className="gcp-opening-photo"
+          parallax={false}
+        />
+
         <div className="opening-scroll-indicator">
           <EditableText
             id="home_scroll_label"
@@ -107,7 +114,7 @@ export default function Home() {
             id="home_cinematic_photo"
             label="Cinematic homepage photograph"
             fallback={defaultPhoto(
-              "Guatemala Children's Project"
+              "home", "Guatemala Children's Project"
             )}
             className="cinematic-image"
             imageClassName="cinematic-image"
@@ -288,7 +295,7 @@ export default function Home() {
                 id="home_story_photo"
                 label="Story section photograph"
                 fallback={defaultPhoto(
-                  "Community and service in Guatemala"
+                  "story", "Community and service in Guatemala"
                 )}
               />
             </Reveal>
@@ -321,7 +328,7 @@ export default function Home() {
 
                 <a
                   className="premium-text-link"
-                  href="/trips"
+                  href="/galleries"
                 >
                   <EditableText
                     id="home_story_link"
@@ -376,7 +383,7 @@ export default function Home() {
               id="home_gallery_photo"
               label="Gallery preview photograph"
               fallback={defaultPhoto(
-                "Guatemala Children's Project photo gallery"
+                "gallery", "Guatemala Children's Project photo gallery"
               )}
             />
           </div>
@@ -385,7 +392,7 @@ export default function Home() {
         <Reveal delay={150}>
           <a
             className="premium-text-link"
-            href="/gallery"
+            href="/galleries"
           >
             <EditableText
               id="home_gallery_link"
@@ -441,7 +448,7 @@ export default function Home() {
           <Reveal delay={250}>
             <a
               className="premium-button"
-              href="/contact"
+              href="/volunteer"
             >
               <EditableText
                 id="home_final_button"

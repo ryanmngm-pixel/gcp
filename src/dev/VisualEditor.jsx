@@ -19,6 +19,8 @@ import About from "../pages/About";
 import News from "../pages/News";
 import Gallery from "../pages/Gallery";
 import Contact from "../pages/Contact";
+import Volunteer from "../pages/Volunteer";
+import Donate from "../pages/Donate";
 
 import PageTextLayer from "../components/PageTextLayer";
 import PhotoSlotEditor from "./PhotoSlotEditor";
@@ -48,13 +50,13 @@ const PAGES = [
   },
   {
     id: "about",
-    label: "Our Story",
+    label: "About",
     component: About,
     contentKey: "about_visual",
   },
   {
     id: "trips",
-    label: "Trips",
+    label: "Galleries",
     component: Gallery,
     contentKey: "gallery_visual",
   },
@@ -70,6 +72,8 @@ const PAGES = [
     component: Contact,
     contentKey: "contact_visual",
   },
+  { id: "volunteer", label: "Volunteer", component: Volunteer, contentKey: "volunteer_visual" },
+  { id: "donate", label: "Donate", component: Donate, contentKey: "donate_visual" },
 ];
 
 function EditorWorkspace({ onExit }) {

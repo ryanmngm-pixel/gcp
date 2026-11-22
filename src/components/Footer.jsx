@@ -1,13 +1,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 
-const footerLinks = [
-  { label: "Our Story", href: "/about" },
-  { label: "Trips", href: "/trips" },
-  { label: "News", href: "/news" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Contact", href: "/contact" },
-];
+import { publicPages } from "../publicPages";
 
 export default function Footer() {
   return (
@@ -27,7 +21,7 @@ export default function Footer() {
 
           <div className="footer-navigation">
             <span>EXPLORE</span>
-            {footerLinks.map((link) => (
+            {publicPages.filter(({ href }) => !["/volunteer", "/donate"].includes(href)).map((link) => (
               <a href={link.href} key={link.href}>
                 {link.label}
               </a>
@@ -36,10 +30,11 @@ export default function Footer() {
 
           <div className="footer-navigation">
             <span>GET INVOLVED</span>
-            <a href="/contact">
-              Make a difference
+            <a href="/volunteer">
+              Volunteer
               <ArrowUpRight size={15} />
             </a>
+            <a href="/donate">Donate <ArrowUpRight size={15} /></a>
           </div>
         </div>
 

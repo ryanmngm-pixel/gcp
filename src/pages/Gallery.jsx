@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 
+import { archiveAlbums } from "../galleryArchive";
 import InteriorPage from "../components/InteriorPage";
 import SmartSlideshow from "../components/SmartSlideshow";
 import { useOptionalVisualEditor } from "../dev/VisualEditorContext";
@@ -199,6 +200,7 @@ function TripEditor({ trip, onSave, onClose }) {
 }
 
 function TripViewer({ trip, onClose }) {
+  const [photoLimit, setPhotoLimit] = useState(24);
   useEffect(() => {
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -241,7 +243,7 @@ function TripViewer({ trip, onClose }) {
         <div className="gcp-trip-viewer-body">
           <div className="gcp-trip-viewer-photo">
             <SmartSlideshow
-              images={trip.photos}
+              images={trip.photos.slice(0, 8)}
               alt={trip.title}
             />
           </div>
@@ -257,7 +259,7 @@ function TripViewer({ trip, onClose }) {
           </div>
 
           <div className="gcp-trip-all-photos">
-            {trip.photos.map((photo, index) => (
+            {trip.photos.slice(0, photoLimit).map((photo, index) => (
               <img
                 key={`${photo.url}-${index}`}
                 src={photo.url}
@@ -266,6 +268,11 @@ function TripViewer({ trip, onClose }) {
               />
             ))}
           </div>
+          {photoLimit < trip.photos.length && (
+            <button className="button button-dark" type="button" onClick={() => setPhotoLimit(photoLimit + 24)}>
+              Load more photographs
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -307,9 +314,10 @@ export default function Gallery() {
     };
   }, [editor]);
 
-  const trips = editor
+  const managedTrips = editor
     ? normalizeTrips(editor.content?.[CONTENT_ID])
     : publishedTrips;
+  const trips = editing ? managedTrips : [...managedTrips, ...archiveAlbums];
 
   function updateTrips(next) {
     editor.update(CONTENT_ID, next);
@@ -339,7 +347,8 @@ export default function Gallery() {
 
   return (
     <InteriorPage
-      eyebrow="OUR GALLERY"
+      photo={{ id: "gallery_hero", url: "/gcp/highlights-1.jpg", alt: "A highlight from the Guatemala Children’s Project photo archive" }}
+      eyebrow="GALLERIES"
       title="Moments that matter."
       description="A visual look at the people, experiences, and communities that make this mission special."
     >
@@ -367,11 +376,9 @@ export default function Gallery() {
         {!trips.length ? (
           <div className="gcp-gallery-empty">
             <Images size={32} />
-            <h3>Stories are on their way.</h3>
+            <h3>Add a trip album.</h3>
             <p>
-              {editing
-                ? "Click Upload Trip to add the first photo collection."
-                : "Check back soon for photographs from our trips."}
+              Click Upload Trip to add a photo collection.
             </p>
           </div>
         ) : (
@@ -385,7 +392,8 @@ export default function Gallery() {
                 >
                   <div className="gcp-gallery-card-photo">
                     <SmartSlideshow
-                      images={trip.photos || []}
+                      controls={false}
+                      images={trip.photos?.slice(0, 3) || []}
                       alt={trip.title}
                     />
                   </div>

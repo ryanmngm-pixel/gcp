@@ -6,7 +6,6 @@ import { PublishedContentProvider } from "../dev/VisualEditorContext";
 
 export default function PublishedHome() {
   const [content, setContent] = useState({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
@@ -40,8 +39,6 @@ export default function PublishedHome() {
           "Unable to load published homepage:",
           error
         );
-      } finally {
-        if (mounted) setLoading(false);
       }
     }
 
@@ -51,10 +48,6 @@ export default function PublishedHome() {
       mounted = false;
     };
   }, []);
-
-  if (loading) {
-    return null;
-  }
 
   return (
     <PublishedContentProvider content={content}>

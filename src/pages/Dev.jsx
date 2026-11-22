@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   ArrowRight,
-  Camera,
   CheckCircle2,
   ChevronRight,
   ExternalLink,
@@ -11,6 +10,7 @@ import {
   LayoutDashboard,
   LoaderCircle,
   LockKeyhole,
+  Mail,
   LogOut,
   Menu,
   Monitor,
@@ -21,6 +21,7 @@ import {
 
 import { supabase } from "../supabase";
 import { checkEditorAccess } from "../dev/contentApi";
+import InquiryInbox from "../dev/InquiryInbox";
 import MediaWorkspace from "../dev/MediaWorkspace";
 import VisualEditor from "../dev/VisualEditor";
 import "./Dev.css";
@@ -49,6 +50,11 @@ const navigation = [
   {
     title: "Management",
     items: [
+      {
+        id: "inquiries",
+        label: "Inquiries",
+        icon: Mail,
+      },
       {
         id: "account",
         label: "Account",
@@ -863,6 +869,8 @@ export default function Dev() {
           {page === "photography" && (
             <MediaWorkspace />
           )}
+
+          {page === "inquiries" && <InquiryInbox />}
 
           {page === "account" && (
             <AccountPage
